@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous"/>
+</head>
+<body>
+    <div class="d-flex justify-content-center">
+        <div class="stopwatch">
+            00:00:00
+        </div>
+        <div class="lapButton">
+            <button class="lap" onclick="lap()" style="border: 3px solid #d7d5d5; background-color: #d7d5d5; border-radius:50%; width:30px; height: 30px; top:0%">
+                <i style="color: rgba(255, 0, 0, 1);" class="fa fa-stopwatch"></i>
+            </button>
+        </div>
+        <ul class="buttons">
+            <li><button onclick="startTimer()" style="border: 3px solid red; background-color: red;">Start</button></li>
+            <li><button onclick="stopTimer()" style="border: 3px solid red; background: transparent;">Stop</button></li>
+            <li><button onclick="resetTimer()" style="border: 3px solid #d7d5d5; background: transparent;">Reset</button></li>
+        </ul>
+    </div>
+    <div class="laps">
+        <h3>Laps Recorded</h3>
+    </div>
+    <div class="clearButton">
+        <button onclick="clearList()" style="border: 0px solid transparent; 
+            background-color: transparent; 
+            right: 10%;
+            width: 40px;
+            height: 40px;
+            margin-top: 0px;
+            ">
+                <i style="color: #d7d5d5;" class="fa fa-trash"></i>
+            </button>
+    </div>
+    <div class="recordsBlocks">
+        <h5 class="records"> no records found</h5>
+    </div>
+</body>
+<style>
+    body{
+        background: #090A0B;
+        color:#d7d5d5;
+        justify-content: center;
+        margin: 0%;
+    }
+    button{
+        width: 130px;
+        height: 50px;
+        margin-top: 30px;
+        margin-left: 5px;
+        margin-right: 5px;
+        color: #d7d5d5;
+        border-radius: 10px;
+        outline: none;
+        cursor: pointer;
+        transition: 1s;
+    }
+    .stopwatch{
+        font-size: 100px;
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        top: 25%;
+        left: 50%;
+        transform: translate(-50%,-55%);
+    }
+    .lapButton{
+        position: absolute;
+        top: 20%;
+        right: 28%;
+        transform: translate(-50%,-55%);
+    }
+    .buttons{
+        position: absolute;
+        top:35%;
+        left:48%;
+        transform: translate(-51.6%,-45%);
+    }
+    .buttons li{
+        display: inline;
+        padding-left: 10px;
+    }
+    button:hover{
+        box-shadow: 2px 2px 18px 2px rgba(255, 255, 255, 0.5);
+    }
+    .laps{
+        color: #d7d5d5;
+        position: absolute;
+        top: 57%;
+        left:5%;
+        border-style: hidden hidden solid hidden;
+        width: 100%;
+        min-width: 1000px;
+        max-width: 1200px;
+    }
+    .clearButton{
+        position: absolute;
+        top: 57%;
+        right: 5%;
+    }
+    .records{
+        color: #d7d5d5;
+        position: absolute;
+        top: 65%;
+        left: 5%;
+    }
+</style>
+<script>
+    const timer = document.querySelector('.stopwatch');
+    var hr=0;
+    var min=0;
+    var sec=0;
+    var centis=0;
+    var stoptime=true;
+    const rec = [];
+    function startTimer(){
+        if (stoptime == true){
+            stoptime = false;
+            counter();
+        }
+    }
+    function stopTimer(){
+        if(stoptime == false){
+            stoptime = true;
+        }
+    }
+    function counter(){
+        if(stoptime == false){
+            sec = parseInt(sec);
+            min = parseInt(min);
+            hr = parseInt(hr);
+            centis=parseInt(centis);
+            sec++
+            if (sec==60){
+                min++;
+                sec=0;
+            }
+            if (min==60){
+                hr++;
+                min=0;
+                sec=0;
+            }
+            if (centis<10 || centis==0){
+                centis='0'+centis
+            }
+            if (sec<10 || sec==0){
+                sec = '0'+sec;
+            }
+            if (min<10||min==0){
+                min='0'+min;
+            }
+            if(hr<10||hr==0){
+                hr='0'+hr
+            }
+            timer.innerHTML=hr + ':' + min + ':' + sec ;
+            setTimeout("counter()", 1000);
+        }
+    }
+    function resetTimer(){
+        timer.innerHTML = "00:00:00";
+        stoptime=true;
+        hr=0;
+        min=0;
+        sec=0;
+    }
+    function lap(){
+        rec.push(hr+":"+min+":"+sec);
+        document.querySelector('.records').innerHTML = rec.join('<br>');
+    }
+    function clearList(){
+        document.querySelector('.records').innerHTML = "no records found";
+        while (rec.length>0){
+            rec.pop();
+        }
+    }
+</script>
